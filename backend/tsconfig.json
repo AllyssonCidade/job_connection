@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "src/utils/types.jsx",
+    "src/contexts/auth.jsx",
+    "src/screens"
+  ]
+}
