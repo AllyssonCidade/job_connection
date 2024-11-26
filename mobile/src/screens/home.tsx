@@ -9,6 +9,7 @@ import { tasksProps } from "../utils/types.module";
 import { useFocusEffect } from "expo-router";
 import { AuthContext } from "../contexts/auth";
 import { TasksContext } from "../contexts/tasksContext";
+import { getVagas } from "../services/api/vagas";
 
 export const Home = ({ navigation }: PropsScreensApp) => {
   const { deletTasks } = usetasksDatabase();
@@ -29,6 +30,14 @@ export const Home = ({ navigation }: PropsScreensApp) => {
     onFilter(data, stats);
   }, [stats, data]);
 
+  async function vagas() {
+    try {
+      const response = await getVagas();
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   // const handleDateChange = async (date: Date) => {
   //   try {
   //     const formatedDate: any = date.toLocaleDateString("pt-BR", {
@@ -136,10 +145,7 @@ export const Home = ({ navigation }: PropsScreensApp) => {
           </Buttom>
         </View>
 
-        <Buttom
-          size="xlarge"
-          onPress={() => navigation.navigate("AdicionarTask", {})}
-        >
+        <Buttom size="xlarge" onPress={() => vagas()}>
           + Adicionar Task
         </Buttom>
 
@@ -152,7 +158,6 @@ export const Home = ({ navigation }: PropsScreensApp) => {
               onEditTask={() =>
                 navigation.push("AdicionarTask", {
                   id: item?.id || undefined,
-                  titulo: item?.titulo || "",
                   nota: item?.nota || "",
                   data: item?.data || "",
                   horaInicio: item?.horaInicio || "",
