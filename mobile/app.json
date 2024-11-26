@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "JobConnect",
+    "slug": "JobConnect",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/avatar_basic.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "JobConnect"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "JobConnect"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f4927c9e-3575-4a77-ba5b-17e033aeab83"
+      }
+    }
+  }
+}
