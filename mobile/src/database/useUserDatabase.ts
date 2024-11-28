@@ -1,17 +1,16 @@
 import { useSQLiteContext } from "expo-sqlite";
 import { UserProps } from "../utils/types.module";
 import { hashSync, compare } from "bcrypt-ts";
-import { gerarSenhaAleatoria } from "../components/GerarSenha";
 
 export function useUserDatabase() {
   //retornando o db que foi iniciado em initializeDatabase.ts
-  const db = useSQLiteContext()
+  const db = useSQLiteContext();
 
-  // funcao para criar usuário 
+  // funcao para criar usuário
   async function createUser({ nome, email, senha }: Omit<UserProps, "id">) {
     const hash = hashSync(senha);
-    const query = "SELECT * FROM users WHERE email = ?"
-    const verifyEmail = await db.getFirstAsync(query, [email]) as UserProps;
+    const query = "SELECT * FROM users WHERE email = ?";
+    const verifyEmail = (await db.getFirstAsync(query, [email])) as UserProps;
 
     if (verifyEmail) {
       throw new Error("Email já cadastrado");
@@ -35,13 +34,12 @@ export function useUserDatabase() {
     }
   }
 
-
   // funcao para retornar usuário
   const readUser = async (email: string, senha: string): Promise<UserProps> => {
     try {
       const query = "SELECT * FROM users WHERE email = ?";
-      const user = await db.getFirstAsync(query, [email, senha]) as UserProps;
-      const hash = user.senha
+      const user = (await db.getFirstAsync(query, [email, senha])) as UserProps;
+      const hash = user.senha;
       if (!user) {
         throw new Error("Usuário não encontrado");
       }
@@ -51,11 +49,11 @@ export function useUserDatabase() {
       }
       return user;
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
 
-  // funcao para wditar dados do usuário 
+  // funcao para wditar dados do usuário
   async function updateUser(data: any) {
     const hashAtual = hashSync(data.senha);
     const hash = hashSync(data.novaSenha);
@@ -74,7 +72,6 @@ export function useUserDatabase() {
       if (!isPasswordValid) {
         throw new Error("Senha incorreta");
       }
-
     } catch (error) {
       console.log("Erro na validação da senha: ", error);
       return;
@@ -90,7 +87,6 @@ export function useUserDatabase() {
         $nome: data.nome,
         $senha: hash || hashAtual,
       });
-
     } catch (error) {
       console.log("Erro ao atualizar os dados: ", error);
       throw error;
@@ -107,24 +103,27 @@ export function useUserDatabase() {
       const result = await db.runAsync(delet, [id]);
 
       if (result?.changes > 0) {
-        console.log('Usuário deletado com sucesso');
+        console.log("Usuário deletado com sucesso");
       } else {
-        console.log('Nenhum usuário encontrado para deletar');
+        console.log("Nenhum usuário encontrado para deletar");
       }
     } catch (error) {
       console.error("Erro ao deletar usuário:", error);
     }
   }
-  
+
   // funcao para recupear senha
   async function recuperaSenha({ email, nome }: any): Promise<string | null> {
-    const query = "SELECT * FROM users WHERE email = ? AND nome = ?"
-    const verifyAccount = await db.getFirstAsync(query, [email, nome]) as UserProps;
+    const query = "SELECT * FROM users WHERE email = ? AND nome = ?";
+    const verifyAccount = (await db.getFirstAsync(query, [
+      email,
+      nome,
+    ])) as UserProps;
     if (!verifyAccount) {
       console.log("Conta não encontrada.");
       return null;
     }
-    const senha = gerarSenhaAleatoria(8);
+    const senha = "Senhaforte123.";
     const statement = await db.prepareAsync(
       "UPDATE users SET senha = $senha WHERE email = $email"
     );
@@ -144,6 +143,5 @@ export function useUserDatabase() {
     }
   }
 
-
-  return { createUser, readUser, updateUser, deletUser, recuperaSenha }
+  return { createUser, readUser, updateUser, deletUser, recuperaSenha };
 }

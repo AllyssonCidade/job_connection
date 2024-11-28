@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Buttom } from "../components/Buttom";
-import InputField from "../components/inputField";
 import { AuthContext } from "../contexts/auth";
 import { useUserDatabase } from "../database/useUserDatabase";
 import UpdateLoading from "../components/loading/updateLoading";
 import { PropsScreensApp } from "../routes/interfaces";
 import { useForm, Controller } from "react-hook-form";
 import { Feather } from "@expo/vector-icons";
+import InputField from "../components/inputField";
 
 ///VERIFICAR LOGICA DA NOVA SENHA.
 //25/11/24

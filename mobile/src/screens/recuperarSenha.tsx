@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import InputField from "../components/inputField";
 import { useUserDatabase } from "../database/useUserDatabase";
 import * as Clipboard from "expo-clipboard";
+import InputField from "../components/inputField";
 import { Buttom } from "../components/Buttom";
 import LoadingScreen from "../components/loading/loginLoading";
 

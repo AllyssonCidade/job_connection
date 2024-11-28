@@ -1,34 +1,43 @@
-import React, { useState } from 'react'
-import { Container, FieldTime, Input, InputContainer, Text } from './styles'
-import { Feather } from '@expo/vector-icons'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
-import { IInputProps } from 'native-base'
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from "react";
+import { Container, FieldTime, Input, InputContainer, Text } from "./styles";
+import { Feather } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { IInputProps } from "native-base";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export type InputFieldProps = {
   titulo?: string,
   value?: any,
   children?: string,
-  types?: 'date' | 'text' | 'time' | 'select',
+  types?: "date" | "text" | "time" | "select",
   options?: { label: string, value: string }[],
   [key: string]: any,
-} & IInputProps
+} & IInputProps;
 
-const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, children, value, types, ...rest }: InputFieldProps) => {
+const InputField = ({
+  titulo,
+  placeholder,
+  onChangeText,
+  secureTextEntry,
+  children,
+  value,
+  types,
+  ...rest
+}: InputFieldProps) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [timeStringValue, setTimeStringValue] = useState('00:00');
+  const [timeStringValue, setTimeStringValue] = useState("00:00");
   const [dataStringValue, setDataStringValue] = useState("HH:MM");
 
   const handleDateChange = (event, selectedDate): any => {
     setShowDatePicker(false);
     if (selectedDate) {
-      const formatedDate = selectedDate.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
+      const formatedDate = selectedDate.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
       });
       setDataStringValue(formatedDate);
       onChangeText && onChangeText(formatedDate);
@@ -39,8 +48,8 @@ const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, childr
     setShowTimePicker(false);
     if (selectedTime) {
       const formatedTime = selectedTime.toLocaleTimeString("pt-BR", {
-        hour: '2-digit',
-        minute: '2-digit',
+        hour: "2-digit",
+        minute: "2-digit",
         hour12: false,
       });
       setTimeStringValue(formatedTime);
@@ -49,21 +58,28 @@ const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, childr
   };
 
   switch (types) {
-    case 'text':
+    case "text":
       return (
-        <Container >
+        <Container>
           <Text>{titulo}</Text>
-          <Input secureTextEntry={secureTextEntry} value={value} onChangeText={onChangeText} placeholder={placeholder} />
+          <Input
+            secureTextEntry={secureTextEntry}
+            value={value}
+            onChangeText={onChangeText}
+            placeholder={placeholder}
+          />
         </Container>
       );
-    case 'date':
+    case "date":
       return (
-        <Container >
+        <Container>
           <Text>{titulo}</Text>
-          <TouchableOpacity {...rest} onPress={() => setShowDatePicker(true)} style={styles.input}>
-
+          <TouchableOpacity
+            {...rest}
+            onPress={() => setShowDatePicker(true)}
+            style={styles.input}
+          >
             {showDatePicker && (
-
               <DateTimePicker
                 value={new Date()}
                 mode="date"
@@ -73,21 +89,29 @@ const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, childr
               />
             )}
             <Text>{dataStringValue}</Text>
-            <Feather style={styles.icon} name="calendar" size={30} color="gray" />
+            <Feather
+              style={styles.icon}
+              name="calendar"
+              size={30}
+              color="gray"
+            />
           </TouchableOpacity>
         </Container>
       );
-    case 'time':
+    case "time":
       return (
         <FieldTime>
           <Text>{titulo}</Text>
-          <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.input}>
+          <TouchableOpacity
+            onPress={() => setShowTimePicker(true)}
+            style={styles.input}
+          >
             {showTimePicker && (
               <DateTimePicker
                 value={new Date()}
                 mode="time"
                 display="default"
-                locale='pt-BR'
+                locale="pt-BR"
                 onChange={handleTimeChange}
                 {...rest}
               />
@@ -96,8 +120,8 @@ const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, childr
             <Feather style={styles.icon} name="clock" size={30} color="gray" />
           </TouchableOpacity>
         </FieldTime>
-      )
-    case 'select':
+      );
+    case "select":
       return (
         <Container>
           <Text>{titulo}</Text>
@@ -106,29 +130,33 @@ const InputField = ({ titulo, placeholder, onChangeText, secureTextEntry, childr
             selectedValue={value}
             onValueChange={(itemValue) => onChangeText(itemValue)}
           >
-            {rest.options?.map(option => (
-              <Picker.Item key={option.value} label={option.label} value={option.value} />
+            {rest.options?.map((option) => (
+              <Picker.Item
+                key={option.value}
+                label={option.label}
+                value={option.value}
+              />
             ))}
           </Picker>
         </Container>
-      )
+      );
   }
-}
+};
 const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
-    alignSelf: 'flex-end',
-    margin: 'auto',
+    alignSelf: "flex-end",
+    margin: "auto",
   },
   input: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderRadius: 40,
     paddingLeft: 10,
     height: 40,
-    width: '100%',
-    backgroundColor: 'white',
-  }
-})
+    width: "100%",
+    backgroundColor: "white",
+  },
+});
 export default InputField;

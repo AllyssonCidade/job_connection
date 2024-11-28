@@ -11,7 +11,7 @@ export function usevagasDatabase() {
   // funcao para criar a tarefa
   async function createVaga(data: Omit<vagasProps, "id">) {
     const statement = await db.prepareAsync(
-      "INSERT INTO myVaga (titulo,descricao,data,horaInicio,horaFim,cor,stats,userId) VALUES ($titulo,$descricao,$data,$horaInicio,$horaFim,$cor,$stats,$userId)"
+      "INSERT INTO myVaga (titulo,descricao,dataCadastro,stats,userId) VALUES ($titulo,$descricao,$dataCadastro,$stats,$userId)"
     );
     const userId = user?.id;
     if (!userId) {
@@ -21,10 +21,7 @@ export function usevagasDatabase() {
       const result = await statement.executeAsync({
         $titulo: data.titulo,
         $descricao: data.descricao,
-        $data: data.data,
-        $horaInicio: data.horaInicio,
-        $horaFim: data.horaFim,
-        $cor: data.cor,
+        $data: data.dataCadastro,
         $stats: "Em Aberto",
         $userId: userId,
       });
@@ -86,10 +83,7 @@ export function usevagasDatabase() {
         $id: data.id,
         $titulo: data?.titulo,
         $descricao: data?.descricao,
-        $data: data?.data,
-        $horaInicio: data?.horaInicio,
-        $horaFim: data?.horaFim,
-        $cor: data?.cor,
+        $data: data?.dataCadastro,
       });
     } catch (error) {
       throw error;

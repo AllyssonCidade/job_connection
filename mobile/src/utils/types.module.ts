@@ -1,17 +1,15 @@
-export interface tasksProps{
-    titulo: string,
-    nota: string,
-    data: string,
-    horaInicio: string,
-    horaFim: string,
-    cor: string,
-    id: string,
-    stats: string,
-    userId: number,
+export interface vagasProps {
+  titulo: string;
+  descricao: string;
+  dataCadastro: string;
+  id: string;
+  stats: string;
+  empresa: string;
+  telefone: string;
 }
 export type UserProps = {
-    nome: string;
-    id: string;
-    email: string;
-    senha: string;
+  nome: string;
+  id: string;
+  email: string;
+  senha: string;
 };

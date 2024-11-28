@@ -34,9 +34,7 @@ function Settings({ navigation }: PropsScreensApp) {
       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 50 }}>
         Configurações
       </Text>
-      <Buttom size="xlarge" onPress={() => navigation.navigate("Notificacoes")}>
-        Notificações
-      </Buttom>
+
       <Buttom
         size="xlarge"
         onPress={() => navigation.navigate("AtualizarDados")}

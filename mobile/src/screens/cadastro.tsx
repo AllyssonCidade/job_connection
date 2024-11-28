@@ -2,9 +2,9 @@ import React from "react";
 import { Image, Text, View, StyleSheet, Alert } from "react-native";
 import { PropsScreensApp } from "../routes/interfaces";
 import { Buttom } from "../components/Buttom";
-import InputField from "../components/inputField";
 import { useUserDatabase } from "../database/useUserDatabase";
 import { useForm, Controller } from "react-hook-form";
+import InputField from "../components/inputField";
 
 interface FormData {
   email: string;

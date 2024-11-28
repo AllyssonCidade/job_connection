@@ -1,24 +1,25 @@
 import { Buttom } from "@/src/components/Buttom";
-import { Task } from "@/src/components/Task";
 import React, { useContext, useEffect, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View, Modal } from "react-native";
 import { PropsScreensApp } from "../routes/interfaces";
-import { usetasksDatabase } from "../database/useTasksDatabase";
-import { tasksProps } from "../utils/types.module";
+import { vagasProps } from "../utils/types.module";
 import { useFocusEffect } from "expo-router";
 import { AuthContext } from "../contexts/auth";
-import { TasksContext } from "../contexts/tasksContext";
+import { VagasContext } from "../contexts/vagasContext";
 import { getVagas } from "../services/api/vagas";
+import { Vaga } from "../components/Vagas";
+import { ModalVaga } from "../components/ModalVaga";
 
 export const Home = ({ navigation }: PropsScreensApp) => {
-  const { deletTasks } = usetasksDatabase();
   const { user } = useContext(AuthContext);
-  const { toggleStats } = usetasksDatabase();
   const [data, setData] = useState("");
   const [stats, setStats] = useState("");
-  const { tasks, notifications } = useContext(TasksContext);
-  const { onFilter } = useContext(TasksContext);
+  const { notifications } = useContext(VagasContext);
+  const { onFilter } = useContext(VagasContext);
+  const [vagas, setVagas] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedVaga, setSelectedVaga] = useState<vagasProps | null>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -30,42 +31,18 @@ export const Home = ({ navigation }: PropsScreensApp) => {
     onFilter(data, stats);
   }, [stats, data]);
 
-  async function vagas() {
+  async function fetchVagas() {
     try {
       const response = await getVagas();
+      setVagas(response.data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   }
-  // const handleDateChange = async (date: Date) => {
-  //   try {
-  //     const formatedDate: any = date.toLocaleDateString("pt-BR", {
-  //       day: "2-digit",
-  //       month: "2-digit",
-  //       year: "numeric",
-  //     });
-  //     setData(formatedDate);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const onDeletTask = async (item: any) => {
-    try {
-      await deletTasks(item.id);
-    } catch (error) {
-      console.log("erro ao deletar task");
-    }
-  };
-  async function onCheck(item: any) {
-    try {
-      const novoStatus = item.stats === "Em Aberto" ? "Concluído" : "Em Aberto";
-      await toggleStats({ id: item.id, stats: novoStatus });
-      onFilter("", "");
-    } catch (error) {
-      console.log("Erro ao alternar o status da task", error);
-    }
+  function handleVagaPress(item: vagasProps) {
+    setSelectedVaga(item);
+    setModalVisible(true);
   }
 
   return (
@@ -87,101 +64,52 @@ export const Home = ({ navigation }: PropsScreensApp) => {
               justifyContent: "space-between",
             }}
           >
-            <View style={styles.notificationContainer}>
-              <Feather
-                onPress={() => navigation.navigate("Notificacoes")}
-                name="bell"
-                size={40}
-                color="black"
-              />
-              {notifications.length > 0 && (
-                <View style={styles.notificationDot}>
-                  <Text style={styles.notificationText}>
-                    {notifications.length}
-                  </Text>
-                </View>
-              )}
-            </View>
             <Feather
               onPress={() => navigation.navigate("Settings")}
               name="settings"
-              size={40}
+              size={35}
               fil
               color="black"
             />
           </View>
         </View>
 
-        <View
-          style={{
-            paddingHorizontal: 15,
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Buttom
-            onPress={() => {
-              setStats("");
-              setData("");
-            }}
-            size="small"
-          >
-            Todos
-          </Buttom>
-          <Buttom
-            onPress={() => setStats("Em aberto")}
-            size="small"
-            color="white"
-          >
-            Em aberto
-          </Buttom>
-          <Buttom
-            onPress={() => setStats("Concluído")}
-            size="small"
-            color="white"
-          >
-            Concluído
-          </Buttom>
-        </View>
-
-        <Buttom size="xlarge" onPress={() => vagas()}>
-          + Adicionar Task
+        <Buttom size="xlarge" onPress={() => fetchVagas()}>
+          Refresh Vagas
         </Buttom>
-
         <FlatList
           style={{ width: "100%" }}
-          data={tasks}
-          keyExtractor={(item: tasksProps) => item.id}
+          data={vagas}
+          keyExtractor={(item: vagasProps) => item.id}
           renderItem={({ item }) => (
-            <Task
-              onEditTask={() =>
-                navigation.push("AdicionarTask", {
-                  id: item?.id || undefined,
-                  nota: item?.nota || "",
-                  data: item?.data || "",
-                  horaInicio: item?.horaInicio || "",
-                  horaFim: item?.horaFim || "",
-                  cor: item?.cor || "",
-                  userId: item?.userId,
-                })
-              }
-              onDeletTask={() => onDeletTask(item)}
-              onToggleTask={() => onCheck(item)}
+            <Vaga
               id={item.id}
               stats={item.stats}
-              cor={item.cor}
-              nota={item.nota}
+              descricao={item.descricao}
               title={item.titulo}
-              horaInicio={item.horaInicio}
-              horaFim={item.horaFim}
+              data={item.dataCadastro}
+              onPress={() => handleVagaPress({ ...item })}
             />
           )}
+        />
+        <ModalVaga
+          vaga={{
+            titulo: selectedVaga?.titulo || "",
+            id: selectedVaga?.id || "",
+            stats: selectedVaga?.stats || "",
+            descricao: selectedVaga?.descricao || "",
+            dataCadastro: selectedVaga?.dataCadastro || "",
+            empresa: selectedVaga?.empresa || "",
+            telefone: selectedVaga?.telefone || "",
+          }}
+          modalVisible={modalVisible}
+          OnPressCloseModal={() => setModalVisible(false)}
         />
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -214,5 +142,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     fontSize: 12,
+  },
+  modalView: {
+    alignSelf: "center",
+    backgroundColor: "white",
+    borderRadius: 20,
+    borderBottomEndRadius: 0,
+    borderBottomLeftRadius: 0,
+    width: "100%",
+    height: 400,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    position: "absolute",
+    bottom: 0,
   },
 });

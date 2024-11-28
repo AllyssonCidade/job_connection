@@ -12,10 +12,10 @@
 //     `);
 
 //     await database.execAsync(`
-//       CREATE TABLE IF NOT EXISTS myTask (
+//       CREATE TABLE IF NOT EXISTS myVaga (
 //         id INTEGER PRIMARY KEY AUTOINCREMENT,
 //         titulo TEXT NOT NULL,
-//         nota TEXT NOT NULL,
+//         descricao TEXT NOT NULL,
 //         data TEXT NOT NULL,
 //         horaInicio TEXT NOT NULL,
 //         horaFim TEXT NOT NULL,
@@ -26,6 +26,6 @@
 //     `);
 //     console.log('Tabelas criadas ou já existem.');
 //   } catch (error) {
-//     console.error('Erro ao criar a tabela myTask:', error);
+//     console.error('Erro ao criar a tabela myVaga:', error);
 //   }
 // }
