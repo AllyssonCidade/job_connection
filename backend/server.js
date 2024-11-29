@@ -1,46 +1,25 @@
 const express = require("express");
-const {
-  create,
-  update,
-  remove,
-  findAll,
-} = require("./repositories/vagasRepository");
+const bodyParser = require("body-parser");
+const sequelize = require("./src/config/database");
+const usuariosRoutes = require("./src/routes/users");
+const vagasRoutes = require("./src/routes/vagas");
 
 const app = express();
-const port = 3000;
 
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-app.post("/vagas", (req, res) => {
-  const { descricao, titulo, dataCadastro, telefone, empresa } = req.body;
-  const vaga = create({ descricao, titulo, dataCadastro, telefone, empresa });
-  res.status(201).json(vaga);
-});
+app.use(bodyParser.json());
 
-app.get("/vagas", (req, res) => {
-  const vagas = findAll();
-  res.json(vagas);
-});
-
-app.put("/vagas/:id", (req, res) => {
-  const { id } = req.params;
-  const { descricao, titulo, dataCadastro, telefone, empresa } = req.body;
-  const vaga = update(id, {
-    descricao,
-    titulo,
-    dataCadastro,
-    telefone,
-    empresa,
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Conexão com o banco de dados estabelecida com sucesso!");
+  })
+  .catch((error) => {
+    console.error("Erro ao conectar ao banco de dados:", error);
   });
-  res.json(vaga);
-});
 
-app.delete("/vagas/:id", (req, res) => {
-  const { id } = req.params;
-  remove(id);
-  res.status(204).send();
-});
+app.use("/users", usuariosRoutes);
+app.use("/vagas", vagasRoutes);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+app.listen(PORT, () => {});
