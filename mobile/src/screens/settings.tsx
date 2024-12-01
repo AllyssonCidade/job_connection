@@ -5,6 +5,7 @@ import { PropsScreensApp } from "../routes/interfaces";
 import { Buttom } from "../components/Buttom";
 import { AuthContext } from "../contexts/auth";
 import { useFocusEffect } from "expo-router";
+import { removeUserCredentials } from "../services/auth";
 
 function Settings({ navigation }: PropsScreensApp) {
   const { signOut } = useContext(AuthContext);
@@ -15,6 +16,8 @@ function Settings({ navigation }: PropsScreensApp) {
   function handleLogout() {
     try {
       signOut();
+      removeUserCredentials();
+      console.log("usuario deslogado");
     } catch (error) {
       console.log("erro:", error);
     }

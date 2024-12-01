@@ -3,7 +3,6 @@ const router = express.Router();
 const userRepository = require("../repositories/usersRepository");
 
 const SECRET_KEY = process.env.SECRET_KEY;
-
 /**
  * @swagger
  * components:

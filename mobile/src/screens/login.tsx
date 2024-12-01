@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/auth";
 import LoadingScreen from "../components/loading/loginLoading";
 import { useForm, Controller } from "react-hook-form";
+import { saveUserCredentials } from "../services/auth";
 
 interface FormData {
   email: string;
@@ -26,6 +27,7 @@ export const Login = ({ navigation }: PropsScreensApp) => {
     setIsLoading(true);
     try {
       const result = await signIn({ email, password });
+      saveUserCredentials(email, password);
       setIsLoading(false);
     } catch (error) {
       console.log("erro:", error);
