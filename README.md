@@ -25,6 +25,15 @@ Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Na
 
     _npm start_
 
+## POPULANDO O BANCO DE DADOS COM VAGAS.
+    Voce pode cadastrar suas vagas pela api usando postman, a docs do swagger ou qualquer outra forma que achar melhor, mas deixamos preparado um pequeno seed para facilitar esta parte.
+    Navegue até o backend 
+    _cd backend_
+    e use o comando 
+    _npm run seed_
+
+    com isso seu app já estará com algumas vagas para que possa fazer os testes.
+
 ## CONFIGURANDO O .ENV
 
     Configuração do arquivo .env: No arquivo .env localizado na pasta backend, altere o número do IP para que o app encontre a API. Caso use um emulador, pode colocar como localhost. O arquivo .env foi deixado ali propositalmente para facilitar para o tutor ao testar o app.
