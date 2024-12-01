@@ -1,6 +1,61 @@
 # JobConnection
 
-Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Native e Expo, utilizando Expo-SQLite para armazenamento local.
+Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Native, Node.js e Expo , utilizando Expo-SQLite e AsyncStorage para armazenamento local.
+
+## Instalação
+
+1.  **Clone o repositório:**  
+    \_git clone https://github.com/AllyssonCidade/job_connection.git
+
+        O projeto está separado em duas pastas, backend e mobile. Após fazer o git clone, abra um novo terminal e navegue até a pasta backend para instalar as dependências (npm install) e iniciar o servidor (npm start). Em seguida, vá no outro terminal e navegue até a pasta mobile para instalar as dependências (npm install) e iniciar o aplicativo móvel (npx expo start).
+
+2.  **Instale as dependências tanto no backend quanto no frontend e inicie**  
+     abra um terminal novo:
+    _cd mobile_
+
+    _npm install_
+
+    _npm expo start_
+
+    navegue até oo outro terminal:
+
+    _cd backend_
+
+    _npm install_
+
+    _npm start_
+
+## CONFIGURANDO O .ENV
+
+    Configuração do arquivo .env: No arquivo .env localizado na pasta backend, altere o número do IP para que o app encontre a API. Caso use um emulador, pode colocar como localhost. O arquivo .env foi deixado ali propositalmente para facilitar para o tutor ao testar o app.
+
+## Uso
+
+    Para usar o aplicativo, siga os passos abaixo:
+
+    Cadastrar-se: Abra o aplicativo e clique em "Cadastrar". Preencha os campos necessários e conclua o cadastro.
+
+    Login: Na tela inicial, insira seu e-mail e senha para fazer login.
+
+    Buscar Vagas: Todas as vagas cadastradas já estarão na sua pagina inicial, caso adicione novas vagas enquanto usa o app pode utilizar o botão de refresh presente na página principal para atualizar o banco de dados, também é possível fazer uma busca simples pele nome da vaga.
+
+    Entrar em Contato: Clique na vaga desejada e utilize o botão "Entrar em Contato" para falar diretamente com o recrutador via WhatsApp.
+
+Nota: É necessário criar uma conta para usar o aplicativo.
+
+## Adicionando Vagas
+
+    Para adicionar vagas, você pode utilizar o Swagger ou o Postman. A documentação da API estará disponível via Swagger, o que permite a adição e manipulação das vagas de emprego.
+
+    Temos aqui um modelo de cadastro de vaga.
+    _{
+    "descricao": "Escreva aqui a descrição da vaga para que seja vista pelo usuário.",
+    "titulo": "Minha vaga legal",
+    "dataCadastro": "2024-10-17",
+    "telefone": "71997248724",
+    "empresa": "AllyssonCidade",
+    "stats": true
+    }_
 
 ## Referência
 
@@ -9,6 +64,16 @@ Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Na
 [Documentação do Expo](https://docs.expo.dev/)
 
 [Documentação Expo SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/)
+
+[Documentação do Node.js](https://nodejs.org/en/docs/)
+
+[Documentação do Swagger](https://swagger.io/docs/)
+
+[Documentação do Sequelize](https://sequelize.org/master/)
+
+[Documentação do AsyncStorage](https://react-native-async-storage.github.io/async-storage/docs/install/)
+
+[Documentação do Axios](https://axios-http.com/docs/intro)
 
 ## Documentação da API
 
@@ -82,20 +147,6 @@ Este projeto não utiliza variáveis de ambiente específicas.
 - Cadastro, login e gerenciamento de perfil do usuário.
 - Armazenamento local de dados com SQLite.
 - Tela de configurações para personalização e exclusão de conta.
-
-## Instalação
-
-1. **Clone o repositório:**  
-   \_git clone https://github.com/AllyssonCidade/JobConnect
-
-2. **Instale as dependências:**  
-   _npm install_
-
-3. **Instale o SQLite para o Expo:**  
-   _npx expo install expo-sqlite_
-
-4. **Inicie o APP:**
-   _npx expo start_
 
 ## Melhorias
 
