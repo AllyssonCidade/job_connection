@@ -10,7 +10,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Configuração do Swagger
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
@@ -25,16 +24,14 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./src/routes/*.js"], // Caminho para os arquivos das rotas
+  apis: ["./src/routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Middleware para análise do corpo da requisição
 app.use(bodyParser.json());
 
-// Conexão com o banco de dados
 sequelize
   .sync()
   .then(() => {
@@ -44,11 +41,9 @@ sequelize
     console.error("Erro ao conectar ao banco de dados:", error);
   });
 
-// Rotas
 app.use("/users", usuariosRoutes);
 app.use("/vagas", vagasRoutes);
 
-// Inicialização do servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
