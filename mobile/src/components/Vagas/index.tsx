@@ -21,7 +21,7 @@ export function Vaga({
   onPress,
 }: VagaProps) {
   return (
-    <Container onPress={onPress}>
+    <Container style={{ backgroundColor: "white" }} onPress={onPress}>
       <ViewFlexColumn>
         <Title numberOfLines={1}>{title}</Title>
         <View style={{ display: "flex", flexDirection: "row" }}>

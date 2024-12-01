@@ -9,6 +9,15 @@ import { Vaga } from "../components/Vagas";
 import { ModalVaga } from "../components/ModalVaga";
 import InputField from "../components/inputField";
 
+const formatDate = (dateString: any) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+};
+
 export const Home = ({ navigation }: PropsScreensApp) => {
   const { user } = useContext(AuthContext);
   const [value, setValue] = useState("");
@@ -27,6 +36,7 @@ export const Home = ({ navigation }: PropsScreensApp) => {
     setFilteredVagas(vagas);
     setValue("");
   }
+
   async function searchVaga(text: string) {
     setValue(text);
     const filtered = vagas.filter((vaga: any) =>
@@ -34,6 +44,7 @@ export const Home = ({ navigation }: PropsScreensApp) => {
     );
     setFilteredVagas(filtered);
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerFull}>
@@ -57,7 +68,6 @@ export const Home = ({ navigation }: PropsScreensApp) => {
               onPress={() => navigation.navigate("Settings")}
               name="menu"
               size={35}
-              fil
               color="black"
             />
           </View>
@@ -107,7 +117,7 @@ export const Home = ({ navigation }: PropsScreensApp) => {
               stats={item.stats}
               descricao={item.descricao}
               title={item.titulo}
-              data={item.dataCadastro}
+              data={formatDate(item.dataCadastro)}
               onPress={() => handleVagaPress({ ...item })}
             />
           )}

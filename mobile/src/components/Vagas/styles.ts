@@ -9,7 +9,6 @@ export const Container = styled.TouchableOpacity`
   flex-direction: row;
   padding: 10px 20px;
   margin-bottom: 10px;
-  elevation: 0.3;
 `;
 export const Title = styled.Text`
   font-size: 20px;
