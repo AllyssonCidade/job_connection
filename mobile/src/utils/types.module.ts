@@ -7,9 +7,10 @@ export interface vagasProps {
   empresa: string;
   telefone: string;
 }
-export type UserProps = {
-  nome: string;
-  id: string;
-  email: string;
-  senha: string;
+
+export type userProps = {
+  id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
 };

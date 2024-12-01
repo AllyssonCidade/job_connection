@@ -1,38 +1,25 @@
 import { createContext, useEffect, useState } from "react";
-import { usevagasDatabase } from "../database/useVagasDatabase";
+import { getVagas } from "../services/api/vagas";
 
 export const VagasContext = createContext<any>({});
 
 export const VagasProvider = ({ children }: any) => {
   const [vagas, setVagas] = useState<any[]>([]);
-  const { filterVaga } = usevagasDatabase();
-  const [notifications, setNotifications] = useState<any[]>([]);
+  useEffect(() => {
+    fetchVagas();
+  }, []);
 
-  const onFilter = async (stats: string, data: string) => {
+  async function fetchVagas() {
     try {
-      const response = await filterVaga(stats, data);
-      setVagas(response);
+      const response = await getVagas();
+      setVagas(response.data);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  useEffect(() => {
-    const vagaNotification = () => {
-      const newNotifications = vagas.filter((vaga: any) => {
-        const [day, month, year] = vaga.data.split("/");
-        const vagaDate = new Date(`${year}-${month}-${day}`);
-        const currentDate = new Date();
-        return vagaDate < currentDate && vaga.stats === "Em Aberto";
-      });
-      setNotifications(newNotifications);
-    };
-
-    vagaNotification();
-  }, [vagas]);
+  }
 
   return (
-    <VagasContext.Provider value={{ onFilter, vagas, notifications }}>
+    <VagasContext.Provider value={{ vagas, fetchVagas }}>
       {children}
     </VagasContext.Provider>
   );

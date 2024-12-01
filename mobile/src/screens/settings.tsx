@@ -29,7 +29,7 @@ function Settings({ navigation }: PropsScreensApp) {
           color="black"
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.welcome}>Olá, {user?.nome}</Text>
+        <Text style={styles.welcome}>Olá, {user?.name}</Text>
       </View>
       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 50 }}>
         Configurações

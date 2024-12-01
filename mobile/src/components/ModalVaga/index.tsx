@@ -1,15 +1,10 @@
 import { vagasProps } from "@/src/utils/types.module";
 import { Feather } from "@expo/vector-icons";
-import {
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import { Buttom } from "../Buttom";
 import { Linking } from "react-native";
+import { useContext } from "react";
+import { VagasContext } from "@/src/contexts/vagasContext";
+import { Modal, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export type ModalVagaProps = {
   modalVisible?: boolean;
@@ -22,6 +17,8 @@ export function ModalVaga({
   OnPressCloseModal,
   vaga,
 }: ModalVagaProps) {
+  const { vagas } = useContext(VagasContext);
+
   function handleWhatsApp() {
     const message = `Olá, estou interessado na vaga: ${vaga?.titulo} que foi publicada em: ${vaga?.dataCadastro}`;
     const url = `https://wa.me/55${vaga?.telefone}?text=${encodeURIComponent(
@@ -61,14 +58,20 @@ export function ModalVaga({
             <Text style={styles.strong}>Descrição: </Text> {vaga?.descricao}
           </Text>
         </ScrollView>
-        <Buttom
-          style={styles.whatsappButton}
-          size="xlarge"
-          onPress={handleWhatsApp}
-        >
-          <Text>Entrar em contato</Text>
-          <Feather name="external-link" size={25} color="black" />
-        </Buttom>
+        {vaga?.stats ? (
+          <Buttom
+            style={styles.whatsappButton}
+            size="xlarge"
+            onPress={handleWhatsApp}
+          >
+            <Text>Entrar em contato</Text>
+            <Feather name="external-link" size={25} color="black" />
+          </Buttom>
+        ) : (
+          <Buttom style={styles.whatsappButton} size="xlarge">
+            <Text>Vaga encerrada</Text>
+          </Buttom>
+        )}
       </View>
     </Modal>
   );

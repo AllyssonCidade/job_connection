@@ -12,7 +12,6 @@ export type RouteProps = {
 
 export type PropsStackRoutes = {
   Home: undefined | RouteProps;
-  SplashScreen: undefined | RouteProps;
   Login: undefined | RouteProps;
   AtualizarDados: undefined | RouteProps;
   Cadastro: undefined | RouteProps;

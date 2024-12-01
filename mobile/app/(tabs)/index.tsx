@@ -1,18 +1,17 @@
-import { initializeDatabase } from "@/src/database/initializeDatabase";
 import AppNavigation from "@/src/routes";
-import { SQLiteProvider } from "expo-sqlite";
 import React from "react";
 import { AuthProvider } from "@/src/contexts/auth";
-import { VagasContext, VagasProvider } from "@/src/contexts/vagasContext";
+import { VagasProvider } from "@/src/contexts/vagasContext";
+import { UsersProvider } from "@/src/contexts/userContext";
 
 export default function App() {
   return (
-    <SQLiteProvider databaseName="myDatabase.db" onInit={initializeDatabase}>
-      <AuthProvider>
+    <AuthProvider>
+      <UsersProvider>
         <VagasProvider>
           <AppNavigation />
         </VagasProvider>
-      </AuthProvider>
-    </SQLiteProvider>
+      </UsersProvider>
+    </AuthProvider>
   );
 }

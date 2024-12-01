@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { useUserDatabase } from "../database/useUserDatabase";
 import * as Clipboard from "expo-clipboard";
 import InputField from "../components/inputField";
 import { Buttom } from "../components/Buttom";
@@ -17,7 +16,6 @@ import LoadingScreen from "../components/loading/loginLoading";
 function RecuperarSenha({ navigation }: PropsScreensApp) {
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
-  const { recuperaSenha } = useUserDatabase();
   const [senha, setSenha] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,19 +23,19 @@ function RecuperarSenha({ navigation }: PropsScreensApp) {
   async function handleSubmit() {
     setIsLoading(true);
     setErrorMessage("");
-    try {
-      const response = await recuperaSenha({ email, nome });
-      if (response) {
-        setSenha(response);
-      } else {
-        setErrorMessage("Nome ou e-mail não encontrados.");
-      }
-    } catch (error) {
-      console.error("Erro ao recuperar senha:", error);
-      setErrorMessage(
-        "Ocorreu um erro. Verifique se o usuário e nome estão corretos."
-      );
-    }
+    // try {
+    //   // const response = await recuperaSenha({ email, nome });
+    //   if (response) {
+    //     setSenha(response);
+    //   } else {
+    //     setErrorMessage("Nome ou e-mail não encontrados.");
+    //   }
+    // } catch (error) {
+    //   console.error("Erro ao recuperar senha:", error);
+    //   setErrorMessage(
+    //     "Ocorreu um erro. Verifique se o usuário e nome estão corretos."
+    //   );
+    // }
     setIsLoading(false);
   }
 
@@ -55,46 +53,54 @@ function RecuperarSenha({ navigation }: PropsScreensApp) {
         <LoadingScreen />
       ) : (
         <>
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 50 }}>
-            Recuperar Senha
-          </Text>
+          <Image
+            source={require("@/assets/images/job.png")}
+            style={styles.image}
+          />
+          <View style={styles.containerFull}>
+            <Text
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+            >
+              Recuperar Senha
+            </Text>
 
-          {senha ? (
-            <View style={styles.senhaContainer}>
-              <Text style={styles.senhaTexto}>Sua nova senha é:</Text>
-              <Text style={styles.senha}>{senha}</Text>
+            {senha ? (
+              <View style={styles.senhaContainer}>
+                <Text style={styles.senhaTexto}>Sua nova senha é:</Text>
+                <Text style={styles.senha}>{senha}</Text>
 
-              <TouchableOpacity
-                style={styles.copyButton}
-                onPress={copyToClipboard}
-              >
-                <Text style={styles.copyButtonText}>Copiar Senha</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.inputContainer}>
-              <InputField
-                value={email}
-                onChangeText={setEmail}
-                titulo="E-mail"
-                placeholder="Digite seu e-mail"
-                types="text"
-              />
-              <InputField
-                value={nome}
-                onChangeText={setNome}
-                titulo="Nome"
-                placeholder="Digite seu nome"
-                types="text"
-              />
-              {errorMessage ? (
-                <Text style={styles.errorMessage}>{errorMessage}</Text>
-              ) : null}
-              <Buttom size="xlarge" onPress={handleSubmit}>
-                Enviar
-              </Buttom>
-            </View>
-          )}
+                <TouchableOpacity
+                  style={styles.copyButton}
+                  onPress={copyToClipboard}
+                >
+                  <Text style={styles.copyButtonText}>Copiar Senha</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.inputContainer}>
+                <InputField
+                  value={email}
+                  onChangeText={setEmail}
+                  titulo="E-mail"
+                  placeholder="Digite seu e-mail"
+                  types="text"
+                />
+                <InputField
+                  value={nome}
+                  onChangeText={setNome}
+                  titulo="Nome"
+                  placeholder="Digite seu nome"
+                  types="text"
+                />
+                {errorMessage ? (
+                  <Text style={styles.errorMessage}>{errorMessage}</Text>
+                ) : null}
+                <Buttom size="xlarge" onPress={handleSubmit}>
+                  Enviar
+                </Buttom>
+              </View>
+            )}
+          </View>
         </>
       )}
     </View>
@@ -105,18 +111,13 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "#f5f5f5",
-    justifyContent: "center",
     display: "flex",
     flex: 1,
   },
-  image: {
-    height: 270,
-    width: 270,
-  },
-  circles: {
-    left: -137,
-    height: 243,
-    width: 270,
+  containerFull: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   inputContainer: {
     width: "90%",
@@ -152,6 +153,10 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: "red",
     marginTop: 10,
+  },
+  image: {
+    width: "100%",
+    height: "40%",
   },
 });
 

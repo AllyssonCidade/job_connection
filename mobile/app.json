@@ -4,7 +4,7 @@
     "slug": "JobConnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/avatar_basic.png",
+    "icon": "./assets/images/job.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {

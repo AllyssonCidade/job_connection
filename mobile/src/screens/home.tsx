@@ -1,50 +1,39 @@
-import { Buttom } from "@/src/components/Buttom";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
-import { FlatList, StyleSheet, Text, View, Modal } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { PropsScreensApp } from "../routes/interfaces";
 import { vagasProps } from "../utils/types.module";
-import { useFocusEffect } from "expo-router";
 import { AuthContext } from "../contexts/auth";
 import { VagasContext } from "../contexts/vagasContext";
-import { getVagas } from "../services/api/vagas";
 import { Vaga } from "../components/Vagas";
 import { ModalVaga } from "../components/ModalVaga";
+import InputField from "../components/inputField";
 
 export const Home = ({ navigation }: PropsScreensApp) => {
   const { user } = useContext(AuthContext);
-  const [data, setData] = useState("");
-  const [stats, setStats] = useState("");
-  const { notifications } = useContext(VagasContext);
-  const { onFilter } = useContext(VagasContext);
-  const [vagas, setVagas] = useState([]);
+  const [value, setValue] = useState("");
+  const { vagas, fetchVagas } = useContext(VagasContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVaga, setSelectedVaga] = useState<vagasProps | null>(null);
+  const [filteredVagas, setFilteredVagas] = useState<vagasProps[]>(vagas);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      onFilter("", "");
-    }, [user])
-  );
-
-  useEffect(() => {
-    onFilter(data, stats);
-  }, [stats, data]);
-
-  async function fetchVagas() {
-    try {
-      const response = await getVagas();
-      setVagas(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
   function handleVagaPress(item: vagasProps) {
     setSelectedVaga(item);
     setModalVisible(true);
   }
 
+  async function handleRefresh() {
+    await fetchVagas();
+    setFilteredVagas(vagas);
+    setValue("");
+  }
+  async function searchVaga(text: string) {
+    setValue(text);
+    const filtered = vagas.filter((vaga: any) =>
+      vaga.titulo.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredVagas(filtered);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.containerFull}>
@@ -56,7 +45,7 @@ export const Home = ({ navigation }: PropsScreensApp) => {
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontSize: 18 }}>Olá, {user?.nome}</Text>
+          <Text style={{ fontSize: 18 }}>Olá, {user?.name}</Text>
           <View
             style={{
               gap: 20,
@@ -66,20 +55,51 @@ export const Home = ({ navigation }: PropsScreensApp) => {
           >
             <Feather
               onPress={() => navigation.navigate("Settings")}
-              name="settings"
+              name="menu"
               size={35}
               fil
               color="black"
             />
           </View>
         </View>
+        <Text style={styles.title}>Job Connection</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: "80%",
+            }}
+          >
+            <InputField
+              value={value}
+              placeholder="Buscar vaga"
+              types="text"
+              onChangeText={searchVaga}
+            />
+            <Feather
+              name="search"
+              size={24}
+              color="black"
+              style={{ position: "absolute", right: 10, bottom: 10 }}
+            />
+          </View>
+          <Feather
+            style={{ alignSelf: "flex-end", padding: 10 }}
+            name="refresh-ccw"
+            size={24}
+            color="black"
+            onPress={handleRefresh}
+          />
+        </View>
 
-        <Buttom size="xlarge" onPress={() => fetchVagas()}>
-          Refresh Vagas
-        </Buttom>
         <FlatList
           style={{ width: "100%" }}
-          data={vagas}
+          data={filteredVagas.length > 0 ? filteredVagas : vagas}
           keyExtractor={(item: vagasProps) => item.id}
           renderItem={({ item }) => (
             <Vaga
@@ -119,11 +139,13 @@ const styles = StyleSheet.create({
   containerFull: {
     height: "100%",
     alignItems: "center",
-    gap: 24,
+    gap: 14,
     marginBottom: 160,
   },
-  notificationContainer: {
-    position: "relative",
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   notificationDot: {
     position: "absolute",

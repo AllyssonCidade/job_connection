@@ -1,23 +1,19 @@
 import React, { useContext, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { Buttom } from "../components/Buttom";
 import { AuthContext } from "../contexts/auth";
-import { useUserDatabase } from "../database/useUserDatabase";
 import UpdateLoading from "../components/loading/updateLoading";
 import { PropsScreensApp } from "../routes/interfaces";
 import { useForm, Controller } from "react-hook-form";
 import { Feather } from "@expo/vector-icons";
 import InputField from "../components/inputField";
-
-///VERIFICAR LOGICA DA NOVA SENHA.
-//25/11/24
+import { UserContext } from "../contexts/userContext";
 
 function AtualizarDados({ navigation }: PropsScreensApp) {
   const { user } = useContext(AuthContext);
-  const { updateUser } = useUserDatabase();
-  const { deletUser } = useUserDatabase();
   const { signOut, signIn } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const { onUpdateUser, onDeleteUser } = useContext(UserContext);
 
   const {
     control,
@@ -26,9 +22,9 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
     reset,
   } = useForm({
     defaultValues: {
-      nome: user?.nome || "",
+      name: user?.name || "",
       email: user?.email || "",
-      senha: "",
+      password: "",
       novaSenha: "",
     },
   });
@@ -36,23 +32,25 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
   const handleAtualize = async (data: any) => {
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 0));
-    const { nome, email, senha, novaSenha } = data;
+    const { name, email, password, novaSenha } = data;
 
     try {
       let result;
       if (novaSenha.length !== 0) {
-        result = await updateUser({
-          nome,
+        result = await onUpdateUser(user?.id, {
+          name,
           email,
-          senha,
-          novaSenha,
-          id: user?.id,
+          password: novaSenha,
         });
       } else {
-        result = await updateUser({ nome, email, senha, id: user?.id });
+        result = await onUpdateUser(user?.id, {
+          name,
+          email,
+          password,
+        });
       }
 
-      await signIn(email, senha);
+      await signIn({ email, password });
       setIsLoading(false);
       reset();
     } catch (error) {
@@ -62,13 +60,32 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
   };
 
   const handleDelete = async () => {
-    const id = Number(user?.id);
-    try {
-      await deletUser(id);
-      signOut();
-    } catch (error) {
-      console.log(error);
-    }
+    const id = user?.id;
+    Alert.alert(
+      "Exluir Conta",
+      "Essa ação irá apagar permanentemente seus dados, deseja continuar?",
+
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Excluir",
+          onPress: async () => {
+            try {
+              await onDeleteUser(id);
+              signOut();
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
@@ -84,7 +101,7 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
               color="black"
               onPress={() => navigation.goBack()}
             />
-            <Text style={styles.welcome}>Olá, {user?.nome}</Text>
+            <Text style={styles.welcome}>Olá, {user?.name}</Text>
           </View>
           <Text
             style={{
@@ -99,7 +116,7 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
           <View style={styles.inputContainer}>
             <Controller
               control={control}
-              name="nome"
+              name="name"
               rules={{
                 required: "Nome é obrigatório",
                 minLength: {
@@ -117,8 +134,8 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
                 />
               )}
             />
-            {errors.nome && (
-              <Text style={styles.errorText}>{errors.nome.message}</Text>
+            {errors.name && (
+              <Text style={styles.errorText}>{errors.name.message}</Text>
             )}
 
             <Controller
@@ -147,7 +164,7 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
 
             <Controller
               control={control}
-              name="senha"
+              name="password"
               rules={{
                 required: "Senha é obrigatória",
                 minLength: {
@@ -171,8 +188,8 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
                 />
               )}
             />
-            {errors.senha && (
-              <Text style={styles.errorText}>{errors.senha.message}</Text>
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password.message}</Text>
             )}
 
             <Controller
@@ -193,10 +210,10 @@ function AtualizarDados({ navigation }: PropsScreensApp) {
               render={({ field: { onChange, value } }) => (
                 <InputField
                   secureTextEntry
-                  titulo="Nova Senha"
+                  titulo="Senha"
                   onChangeText={onChange}
                   value={value}
-                  placeholder="Repita sua senha atual ou digite uma nova para alterar"
+                  placeholder="Confirme sua senha"
                   types="text"
                 />
               )}

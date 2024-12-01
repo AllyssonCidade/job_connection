@@ -16,7 +16,7 @@ export const Input = styled.TextInput`
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
-  padding-left: 10px;
+  padding-left: 14px;
   height: 40px;
   width: 100%;
   background-color: white;
