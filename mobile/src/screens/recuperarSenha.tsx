@@ -23,20 +23,21 @@ function RecuperarSenha({ navigation }: PropsScreensApp) {
   async function handleSubmit() {
     setIsLoading(true);
     setErrorMessage("");
-    // try {
-    //   // const response = await recuperaSenha({ email, nome });
-    //   if (response) {
-    //     setSenha(response);
-    //   } else {
-    //     setErrorMessage("Nome ou e-mail não encontrados.");
+    Alert.alert("Recuperar Senha", "Entre em contato com os desenvolvedores.");
+    //   try {
+    //     // const response = await recuperaSenha({ email, nome });
+    //     if (response) {
+    //       setSenha(response);
+    //     } else {
+    //       setErrorMessage("Nome ou e-mail não encontrados.");
+    //     }
+    //   } catch (error) {
+    //     console.error("Erro ao recuperar senha:", error);
+    //     setErrorMessage(
+    //       "Ocorreu um erro. Verifique se o usuário e nome estão corretos."
+    //     );
     //   }
-    // } catch (error) {
-    //   console.error("Erro ao recuperar senha:", error);
-    //   setErrorMessage(
-    //     "Ocorreu um erro. Verifique se o usuário e nome estão corretos."
-    //   );
-    // }
-    setIsLoading(false);
+    //   setIsLoading(false);
   }
 
   const copyToClipboard = async () => {

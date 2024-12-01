@@ -49,7 +49,9 @@
     "react-native-select-dropdown": "^4.0.1",
     "react-native-svg": "^15.7.1",
     "react-native-web": "~0.19.10",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
