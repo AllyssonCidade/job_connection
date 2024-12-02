@@ -11,6 +11,7 @@ Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Na
 
 2.  **Instale as dependências tanto no backend quanto no frontend e inicie**  
      abra um terminal novo:
+
     _cd mobile_
 
     _npm install_
