@@ -4,13 +4,15 @@ Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Na
 
 ## Instalação
 
-1.  **Clone o repositório:**  
+1.  **Clone o repositório:**
+   
     \_git clone https://github.com/AllyssonCidade/job_connection.git
 
         O projeto está separado em duas pastas, backend e mobile. Após fazer o git clone, abra um novo terminal e navegue até a pasta backend para instalar as dependências (npm install) e iniciar o servidor (npm start). Em seguida, vá no outro terminal e navegue até a pasta mobile para instalar as dependências (npm install) e iniciar o aplicativo móvel (npx expo start).
 
-2.  **Instale as dependências tanto no backend quanto no frontend e inicie**  
+3.  **Instale as dependências tanto no backend quanto no frontend e inicie**  
      abra um terminal novo:
+    
     _cd mobile_
 
     _npm install_
@@ -26,6 +28,7 @@ Um aplicativo moderno de conexão de vagas de emprego, desenvolvido com React Na
     _npm start_
 
 ## POPULANDO O BANCO DE DADOS COM VAGAS.
+    
     Voce pode cadastrar suas vagas pela api usando postman, a docs do swagger ou qualquer outra forma que achar melhor, mas deixamos preparado um pequeno seed para facilitar esta parte.
     Navegue até o backend 
     _cd backend_
