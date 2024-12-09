@@ -55,7 +55,10 @@ Nota: É necessário criar uma conta para usar o aplicativo.
 ## Adicionando Vagas
 
     Para adicionar vagas, você pode utilizar o Swagger ou o Postman. A documentação da API estará disponível via Swagger, o que permite a adição e manipulação das vagas de emprego.
-
+        
+    Para o Swagger você pode entrar neste link:
+    http://localhost:3000/api-docs/Vaga
+    
     Temos aqui um modelo de cadastro de vaga.
     _{
     "descricao": "Escreva aqui a descrição da vaga para que seja vista pelo usuário.",
